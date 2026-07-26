@@ -1,0 +1,76 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "rmllm"
+version = "0.0.1"
+description = "A short description of the project."
+authors = [
+  { name = "Hidden For Anonymity" },
+]
+
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    
+]
+dependencies = [
+    "ipython",
+    "ipykernel",
+    "jupyterlab",
+    "loguru==0.7.3",
+    "matplotlib",
+    "mkdocs",
+    "nltk",
+    "notebook",
+    "numpy==2.4.6",
+    "pandas==3.0.3",
+    "pip",
+    "pytest",
+    "python-dotenv==1.2.2",
+    "ruff",
+    "scikit-learn",
+    "scipy",
+    "seaborn",
+    "statsmodels",
+    "tqdm==4.67.1",
+    "typer",
+    "great_tables",
+    # Mixed-models stack (required for exp2 analysis)
+    "formulae",
+    "pyarrow",
+    "polars",
+]
+requires-python = ">=3.11"
+
+[project.optional-dependencies]
+# Install with: uv pip install -e ".[analysis]"
+analysis = [
+    # Mixed-models stack
+    "pymer4==0.9.0",
+    "rpy2>=3.5.0",
+    # Utilities
+    "pingouin>=0.5.4",         # effect sizes (Cohen's d, η², etc.)
+]
+# Install with: uv pip install -e ".[simulation]"
+# Required by simulation/*.py (psychscanner-driven RM task runs), not by the rmllm package itself.
+simulation = [
+    "psychscanner",
+    "langchain-core==1.5.0",
+    "pydantic>=2.13.4,<3",
+]
+
+
+[tool.ruff]
+line-length = 99
+src = ["rmllm"]
+include = ["pyproject.toml", "rmllm/**/*.py"]
+
+[tool.ruff.lint]
+extend-select = ["I"]  # Add import sorting
+
+[tool.ruff.lint.isort]
+known-first-party = ["rmllm"]
+force-sort-within-sections = true
+

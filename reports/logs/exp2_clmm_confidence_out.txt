@@ -1,0 +1,90 @@
+=== CLMM Model Comparisons ===
+Likelihood ratio tests of cumulative link models:
+ 
+      formula:                                                                                                                                              
+m0    confidence_ord ~ 1 + (1 | trace)                                                                                                                      
+m_add confidence_ord ~ source + setsize + fb_exp + model + accuracy + reading_hallucination + rating_cen + order_c + (1 | trace)                            
+m_int confidence_ord ~ source * setsize + source * fb_exp + setsize * fb_exp + model + accuracy + reading_hallucination + rating_cen + order_c + (1 | trace)
+      link: threshold:
+m0    logit flexible  
+m_add logit flexible  
+m_int logit flexible  
+
+      no.par    AIC logLik LR.stat df Pr(>Chisq)    
+m0         6 117917 -58953                          
+m_add     18 114301 -57133 3639.72 12  < 2.2e-16 ***
+m_int     21 113764 -56861  543.05  3  < 2.2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+=== Interactive Model Summary ===
+Cumulative Link Mixed Model fitted with the Laplace approximation
+
+formula: confidence_ord ~ source * setsize + source * fb_exp + setsize *  
+    fb_exp + model + accuracy + reading_hallucination + rating_cen +  
+    order_c + (1 | trace)
+data:    df
+
+ link  threshold nobs  logLik    AIC       niter       max.grad cond.H
+ logit flexible  72000 -56861.18 113764.37 3540(55652) 3.06e+02 NaN   
+
+Random effects:
+ Groups Name        Variance Std.Dev.
+ trace  (Intercept) 7.159    2.676   
+Number of groups:  trace 4800 
+
+Coefficients:
+                          Estimate Std. Error z value Pr(>|z|)
+sourceimagined             0.09492        NaN     NaN      NaN
+setsize40                 -0.54534        NaN     NaN      NaN
+fb_expTrue                -0.39355        NaN     NaN      NaN
+modelGemma3:12b-QAT        0.84639        NaN     NaN      NaN
+modelGemma3:27b            4.31810        NaN     NaN      NaN
+modelGemma3:27b-QAT        5.18296        NaN     NaN      NaN
+modelLlama3.3:70b          1.34941        NaN     NaN      NaN
+modelLlama4:16x17b        -1.16976        NaN     NaN      NaN
+accuracy1                  0.02987        NaN     NaN      NaN
+reading_hallucination1    -0.36000        NaN     NaN      NaN
+rating_cen                 0.01637        NaN     NaN      NaN
+order_c                    0.28287        NaN     NaN      NaN
+sourceimagined:setsize40   0.11616        NaN     NaN      NaN
+sourceimagined:fb_expTrue -0.83544        NaN     NaN      NaN
+setsize40:fb_expTrue       0.08883        NaN     NaN      NaN
+
+Threshold coefficients:
+    Estimate Std. Error z value
+1|2  -4.7825        NaN     NaN
+2|3  -4.2738        NaN     NaN
+3|4  -3.6646        NaN     NaN
+4|5  -2.0273        NaN     NaN
+5|6   0.4306        NaN     NaN
+
+=== Type-II Wald Tests ===
+car::Anova failed: Cannot compute vcov: 
+Hessian is not positive definite 
+
+=== OR Table ===
+                                b  SE   z   p       OR OR_lo OR_hi
+sourceimagined             0.0949 NaN NaN NaN   1.0996    NA    NA
+setsize40                 -0.5453 NaN NaN NaN   0.5796    NA    NA
+fb_expTrue                -0.3936 NaN NaN NaN   0.6747    NA    NA
+modelGemma3:12b-QAT        0.8464 NaN NaN NaN   2.3312    NA    NA
+modelGemma3:27b            4.3181 NaN NaN NaN  75.0460    NA    NA
+modelGemma3:27b-QAT        5.1830 NaN NaN NaN 178.2092    NA    NA
+modelLlama3.3:70b          1.3494 NaN NaN NaN   3.8552    NA    NA
+modelLlama4:16x17b        -1.1698 NaN NaN NaN   0.3104    NA    NA
+accuracy1                  0.0299 NaN NaN NaN   1.0303    NA    NA
+reading_hallucination1    -0.3600 NaN NaN NaN   0.6977    NA    NA
+rating_cen                 0.0164 NaN NaN NaN   1.0165    NA    NA
+order_c                    0.2829 NaN NaN NaN   1.3269    NA    NA
+sourceimagined:setsize40   0.1162 NaN NaN NaN   1.1232    NA    NA
+sourceimagined:fb_expTrue -0.8354 NaN NaN NaN   0.4337    NA    NA
+setsize40:fb_expTrue       0.0888 NaN NaN NaN   1.0929    NA    NA
+
+=== Post-hoc: Source x Feedback ===
+emmeans failed: Cannot compute vcov: 
+Hessian is not positive definite 
+
+=== Post-hoc: Source x Set Size ===
+emmeans failed: Cannot compute vcov: 
+Hessian is not positive definite 

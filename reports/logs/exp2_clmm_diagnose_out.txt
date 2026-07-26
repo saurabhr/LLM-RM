@@ -1,0 +1,194 @@
+# Independent re-verification run, 2026-07-16
+# Script: notebooks/archive/exp2_clmm_diagnose.R, run fresh against data/processed/exp2_trial_data.csv
+# Purpose: confirm the CLMM non-convergence / non-positive-definite Hessian claim in Methods
+# is reproducible from raw data, independent of the original exp2_clmm_confidence.ipynb run
+# whose output is archived separately in reports/logs/exp2_clmm_confidence_out.txt.
+# Runtime: 12,868.9 s (~3.6 h) for the interactive-model fit alone.
+
+Data file: <PROJECT_ROOT>/data/processed/exp2_trial_data.csv
+
+N = 72000 rows
+
+=== Cross-tab: source x setsize x fb_exp x confidence ===
+, ,  = False,  = 1
+
+           
+              20   40
+  perceived   62  262
+  imagined    23  261
+
+, ,  = True,  = 1
+
+           
+              20   40
+  perceived  343 1932
+  imagined   340 1987
+
+, ,  = False,  = 2
+
+           
+              20   40
+  perceived   66  129
+  imagined    25    1
+
+, ,  = True,  = 2
+
+           
+              20   40
+  perceived   68  247
+  imagined    42  249
+
+, ,  = False,  = 3
+
+           
+              20   40
+  perceived   96  361
+  imagined    60    5
+
+, ,  = True,  = 3
+
+           
+              20   40
+  perceived   60  386
+  imagined    77  297
+
+, ,  = False,  = 4
+
+           
+              20   40
+  perceived  783  935
+  imagined   483  411
+
+, ,  = True,  = 4
+
+           
+              20   40
+  perceived  533 1147
+  imagined   601 1664
+
+, ,  = False,  = 5
+
+           
+              20   40
+  perceived 1408 3703
+  imagined  1754 3599
+
+, ,  = True,  = 5
+
+           
+              20   40
+  perceived 1566 1767
+  imagined  1813 1717
+
+, ,  = False,  = 6
+
+           
+              20   40
+  perceived 3585 6610
+  imagined  3655 7723
+
+, ,  = True,  = 6
+
+           
+              20   40
+  perceived 3430 6521
+  imagined  3127 6086
+
+
+=== Cross-tab: model x confidence ===
+                
+                     1     2     3     4     5     6
+  Gemma3:12b      2797   573   405   449  1565  6211
+  Gemma3:12b-QAT  2109   131   136   316  2083  7225
+  Gemma3:27b        24   107   258   135  1542  9934
+  Gemma3:27b-QAT     3    12    64   107   996 10818
+  Llama3.3:70b       0     2    16  1391  4042  6549
+  Llama4:16x17b    277     2   463  4159  7099     0
+
+=== Cross-tab: model x accuracy x reading_hallucination (cell sizes) ===
+, ,  = 0
+
+                
+                    0    1
+  Gemma3:12b     5338 3280
+  Gemma3:12b-QAT 3964 3525
+  Gemma3:27b     4226 5243
+  Gemma3:27b-QAT 4607 4733
+  Llama3.3:70b   2947 9016
+  Llama4:16x17b  4745 5761
+
+, ,  = 1
+
+                
+                    0    1
+  Gemma3:12b     1079 2303
+  Gemma3:12b-QAT 1765 2746
+  Gemma3:27b     1051 1480
+  Gemma3:27b-QAT  923 1737
+  Llama3.3:70b     20   17
+  Llama4:16x17b   705  789
+
+
+Number of empty cells in source x setsize x fb_exp x confidence: 0 out of 48 
+
+Fitting interactive model (m_int) ...
+There were 12 warnings (use warnings() to see them)
+  Done in 12868.9 s
+
+=== Convergence diagnostics ===
+optRes$message : false convergence (8) 
+optRes$convergence (0 = OK): 1 
+max|gradient|  : 2135.357 
+
+=== Hessian eigenvalues ===
+range          : -62452375 87136293 
+condition no.  : -1.395244 
+# non-positive eigenvalues: 5 
+
+=== Parameter direction(s) with non-positive curvature ===
+(the largest-|loading| coefficients in these eigenvectors are the
+ parameters most responsible for the non-identifiability)
+
+Eigenvalue #1 = -6.24524e+07
+          rating_cen            setsize40           fb_expTrue 
+               0.524               -0.307               -0.307 
+setsize40:fb_expTrue       sourceimagined 
+              -0.307               -0.296 
+
+Eigenvalue #2 = -1.69042e+07
+       1|2  accuracy1        3|4 rating_cen        ST1 
+     0.741      0.291     -0.272      0.263     -0.230 
+
+Eigenvalue #3 = -5.41216e+06
+ accuracy1        ST1        3|4 rating_cen        1|2 
+     0.678      0.498      0.387     -0.206      0.185 
+
+Eigenvalue #4 = -945370
+setsize40:fb_expTrue           fb_expTrue            setsize40 
+              -0.816                0.414                0.402 
+                 5|6                  ST1 
+               0.000                0.000 
+
+Eigenvalue #5 = -945266
+               setsize40               fb_expTrue     setsize40:fb_expTrue 
+                   0.711                   -0.704                   -0.007 
+                     ST1 sourceimagined:setsize40 
+                   0.000                    0.000 
+
+=== Coefficients (point estimates, no SE since vcov unavailable) ===
+                      1|2                       2|3                       3|4 
+                  -4.4765                   -3.9939                   -3.3925 
+                      4|5                       5|6            sourceimagined 
+                  -1.7776                    0.6974                    0.0724 
+                setsize40                fb_expTrue       modelGemma3:12b-QAT 
+                   0.0689                    0.3286                    0.6806 
+          modelGemma3:27b       modelGemma3:27b-QAT         modelLlama3.3:70b 
+                   3.8668                    4.5191                    1.0847 
+       modelLlama4:16x17b                 accuracy1    reading_hallucination1 
+                  -1.3849                    0.0393                   -0.3708 
+               rating_cen                   order_c  sourceimagined:setsize40 
+                   0.0158                    0.2515                    0.1598 
+sourceimagined:fb_expTrue      setsize40:fb_expTrue 
+                  -0.8623                   -0.6564 
+
+Done.

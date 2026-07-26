@@ -1,0 +1,20 @@
+Loaded 72,000 test-phase trials
+Unique traces: 4,800
+
+=== Primary: paired trace-level test (correct - incorrect) ===
+Contributing traces: 4,519 of 4,800 (281 invariant-accuracy traces drop out)
+Mean within-trace difference = +0.0007 confidence points (95% CI [-0.0114, +0.0128])
+Paired t(4518) = 0.113, p = 0.9102; Cohen's dz = +0.002
+Wilcoxon signed-rank: W = 1809534.0, p = 0.1868
+
+=== By feedback condition ===
+feedback=False  n=2,206  mean d=+0.0610  t=+6.335  p=2.866e-10
+feedback=True   n=2,313  mean d=-0.0568  t=-7.411  p=1.748e-13
+
+=== By model (descriptive) ===
+Gemma3:12b       n=  800  mean d=-0.0114  p=0.4797
+Gemma3:12b-QAT   n=  799  mean d=+0.0567  p=0.0002668
+Gemma3:27b       n=  800  mean d=+0.0441  p=0.00434
+Gemma3:27b-QAT   n=  800  mean d=-0.0647  p=3.777e-10
+Llama3.3:70b     n=  520  mean d=-0.0328  p=0.2145
+Llama4:16x17b    n=  800  mean d=+0.0006  p=0.9445

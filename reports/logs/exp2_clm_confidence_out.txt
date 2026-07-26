@@ -1,0 +1,153 @@
+=== Experiment 2: CLM for Confidence Ratings ===
+N = 72000 observations
+Model: clm(confidence_ord ~ source*setsize + source*fb_exp + setsize*fb_exp +
+           model + accuracy + reading_hallucination + rating_cen + order_c,
+           link='logit')
+
+=== Model Comparisons (LRT) ===
+Likelihood ratio tests of cumulative link models:
+ 
+      formula:                                                                                                                                
+m0    confidence_ord ~ 1                                                                                                                      
+m_add confidence_ord ~ source + setsize + fb_exp + model + accuracy + reading_hallucination + rating_cen + order_c                            
+m_int confidence_ord ~ source * setsize + source * fb_exp + setsize * fb_exp + model + accuracy + reading_hallucination + rating_cen + order_c
+      link: threshold:
+m0    logit flexible  
+m_add logit flexible  
+m_int logit flexible  
+
+      no.par    AIC logLik  LR.stat df Pr(>Chisq)    
+m0         5 172637 -86313                           
+m_add     17 148015 -73991 24645.09 12  < 2.2e-16 ***
+m_int     20 147449 -73704   572.73  3  < 2.2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+=== Interactive Model Summary ===
+formula: 
+confidence_ord ~ source * setsize + source * fb_exp + setsize * fb_exp + model + accuracy + reading_hallucination + rating_cen + order_c
+data:    df
+
+ link  threshold nobs  logLik    AIC       niter max.grad cond.H 
+ logit flexible  72000 -73704.35 147448.71 7(2)  5.50e-08 5.7e+04
+
+Coefficients:
+                            Estimate Std. Error z value Pr(>|z|)    
+sourceimagined             0.0982518  0.0334443   2.938  0.00331 ** 
+setsize40                 -0.0567851  0.0286576  -1.982  0.04753 *  
+fb_expTrue                -0.1487931  0.0316503  -4.701 2.59e-06 ***
+modelGemma3:12b-QAT        0.5459353  0.0274040  19.922  < 2e-16 ***
+modelGemma3:27b            2.2189783  0.0317345  69.923  < 2e-16 ***
+modelGemma3:27b-QAT        2.8817937  0.0369215  78.052  < 2e-16 ***
+modelLlama3.3:70b          0.9221906  0.0279304  33.017  < 2e-16 ***
+modelLlama4:16x17b        -0.8154927  0.0246180 -33.126  < 2e-16 ***
+accuracy1                  0.0304325  0.0163749   1.858  0.06310 .  
+reading_hallucination1     0.0004693  0.0251428   0.019  0.98511    
+rating_cen                 0.0107500  0.0004255  25.262  < 2e-16 ***
+order_c                    0.1319513  0.0156550   8.429  < 2e-16 ***
+sourceimagined:setsize40   0.1420490  0.0332211   4.276 1.90e-05 ***
+sourceimagined:fb_expTrue -0.5032514  0.0318705 -15.791  < 2e-16 ***
+setsize40:fb_expTrue      -0.5832565  0.0333106 -17.510  < 2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Threshold coefficients:
+    Estimate Std. Error z value
+1|2 -2.54572    0.03630 -70.129
+2|3 -2.37856    0.03600 -66.079
+3|4 -2.14328    0.03567 -60.084
+4|5 -1.27240    0.03495 -36.407
+5|6  0.30474    0.03434   8.873
+
+=== Type-II Wald Chi-Square Tests ===
+Analysis of Deviance Table (Type II tests)
+
+Response: confidence_ord
+                      Df      Chisq Pr(>Chisq)    
+source                 1    12.9122  0.0003264 ***
+setsize                1   278.6445  < 2.2e-16 ***
+fb_exp                 1  2328.4467  < 2.2e-16 ***
+model                  5 17620.6126  < 2.2e-16 ***
+accuracy               1     3.4540  0.0630999 .  
+reading_hallucination  1     0.0003  0.9851072    
+rating_cen             1   638.1539  < 2.2e-16 ***
+order_c                1    71.0433  < 2.2e-16 ***
+source:setsize         1    18.2830  1.904e-05 ***
+source:fb_exp          1   249.3403  < 2.2e-16 ***
+setsize:fb_exp         1   306.5870  < 2.2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+=== OR Table (Interactive Model) ===
+                                b     SE        z      p      OR   OR_lo   OR_hi sig
+sourceimagined             0.0983 0.0334   2.9378 0.0033  1.1032  1.0332  1.1780  **
+setsize40                 -0.0568 0.0287  -1.9815 0.0475  0.9448  0.8932  0.9993   *
+fb_expTrue                -0.1488 0.0317  -4.7012 0.0000  0.8617  0.8099  0.9169 ***
+modelGemma3:12b-QAT        0.5459 0.0274  19.9217 0.0000  1.7262  1.6360  1.8215 ***
+modelGemma3:27b            2.2190 0.0317  69.9232 0.0000  9.1979  8.6445  9.7897 ***
+modelGemma3:27b-QAT        2.8818 0.0369  78.0519 0.0000 17.8463 16.6060 19.1922 ***
+modelLlama3.3:70b          0.9222 0.0279  33.0175 0.0000  2.5148  2.3809  2.6564 ***
+modelLlama4:16x17b        -0.8155 0.0246 -33.1258 0.0000  0.4424  0.4216  0.4643 ***
+accuracy1                  0.0304 0.0164   1.8585 0.0631  1.0309  0.9983  1.0645    
+reading_hallucination1     0.0005 0.0251   0.0187 0.9851  1.0005  0.9524  1.0510    
+rating_cen                 0.0108 0.0004  25.2617 0.0000  1.0108  1.0100  1.0117 ***
+order_c                    0.1320 0.0157   8.4287 0.0000  1.1411  1.1066  1.1766 ***
+sourceimagined:setsize40   0.1420 0.0332   4.2759 0.0000  1.1526  1.0800  1.2302 ***
+sourceimagined:fb_expTrue -0.5033 0.0319 -15.7905 0.0000  0.6046  0.5679  0.6435 ***
+setsize40:fb_expTrue      -0.5833 0.0333 -17.5096 0.0000  0.5581  0.5228  0.5957 ***
+
+=== Pseudo-R² ===
+McFadden  R2  = 0.1461
+Nagelkerke R2 = 0.3250
+AIC null        = 172636.5
+AIC additive    = 148015.4
+AIC interactive = 147448.7
+
+=== Post-hoc: Source x Feedback (Bonferroni) ===
+ contrast                         estimate     SE  df z.ratio p.value
+ perceived False - imagined False  -0.0721 0.0111 Inf  -6.486 <0.0001
+ perceived False - perceived True   0.2254 0.0113 Inf  19.928 <0.0001
+ perceived False - imagined True    0.4107 0.0141 Inf  29.133 <0.0001
+ imagined False - perceived True    0.2974 0.0121 Inf  24.570 <0.0001
+ imagined False - imagined True     0.4828 0.0119 Inf  40.490 <0.0001
+ perceived True - imagined True     0.1853 0.0146 Inf  12.731 <0.0001
+
+Results are averaged over the levels of: setsize, model, accuracy, reading_hallucination, order_c 
+P value adjustment: bonferroni method for 6 tests 
+
+=== Post-hoc: Source x Set Size (Bonferroni) ===
+ contrast                                  estimate     SE  df z.ratio p.value
+ perceived setsize20 - imagined setsize20    0.0820 0.0137 Inf   5.967 <0.0001
+ perceived setsize20 - perceived setsize40   0.1832 0.0113 Inf  16.202 <0.0001
+ perceived setsize20 - imagined setsize40    0.2144 0.0129 Inf  16.671 <0.0001
+ imagined setsize20 - perceived setsize40    0.1012 0.0132 Inf   7.664 <0.0001
+ imagined setsize20 - imagined setsize40     0.1324 0.0118 Inf  11.233 <0.0001
+ perceived setsize40 - imagined setsize40    0.0312 0.0122 Inf   2.561  0.0626
+
+Results are averaged over the levels of: fb_exp, model, accuracy, reading_hallucination, order_c 
+P value adjustment: bonferroni method for 6 tests 
+
+=== APA-style Table ===
+Term                                                 b       SE        z        p       OR  95% CI
+--------------------------------------------------------------------------------------------------------- 
+sourceimagined                                   0.098    0.033    2.938    0.003    1.103 [1.033, 1.178] **
+setsize40                                       -0.057    0.029   -1.982    0.048    0.945 [0.893, 0.999] *
+fb_expTrue                                      -0.149    0.032   -4.701   < .001    0.862 [0.810, 0.917] ***
+modelGemma3:12b-QAT                              0.546    0.027   19.922   < .001    1.726 [1.636, 1.822] ***
+modelGemma3:27b                                  2.219    0.032   69.923   < .001    9.198 [8.645, 9.790] ***
+modelGemma3:27b-QAT                              2.882    0.037   78.052   < .001   17.846 [16.606, 19.192] ***
+modelLlama3.3:70b                                0.922    0.028   33.017   < .001    2.515 [2.381, 2.656] ***
+modelLlama4:16x17b                              -0.815    0.025  -33.126   < .001    0.442 [0.422, 0.464] ***
+accuracy1                                        0.030    0.016    1.858    0.063    1.031 [0.998, 1.065] 
+reading_hallucination1                           0.000    0.025    0.019    0.985    1.000 [0.952, 1.051] 
+rating_cen                                       0.011    0.000   25.262   < .001    1.011 [1.010, 1.012] ***
+order_c                                          0.132    0.016    8.429   < .001    1.141 [1.107, 1.177] ***
+sourceimagined:setsize40                         0.142    0.033    4.276   < .001    1.153 [1.080, 1.230] ***
+sourceimagined:fb_expTrue                       -0.503    0.032  -15.791   < .001    0.605 [0.568, 0.644] ***
+setsize40:fb_expTrue                            -0.583    0.033  -17.510   < .001    0.558 [0.523, 0.596] ***
+
+Note. CLM = Cumulative Link Model (logit link, fixed effects).
+OR = odds ratio; 95% CI = profile likelihood CI.
+Reference: source = perceived, setsize = 20, fb_exp = False,
+           model = Gemma3:12b, accuracy = 0 (incorrect),
+           reading_hallucination = 0.
