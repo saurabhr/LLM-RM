@@ -40,7 +40,7 @@ LLM-RM/
 │   ├── llmmodels_test_remote.txt      #   model list for HPC runs
 │   ├── taskrmllm_*.txt                #   task lists consumed by the runners
 │   └── local/                         #   self-contained copy of the above for running on this laptop (local_job_rm*.sh, its own run_rm_task_*.py, llmmodels_test_local.txt)
-├── data/
+├── data/                             #   Available upon publication on OSF.
 │   ├── raw/                          #   source task/persona defs: persona_data/, prepare_task/, rm_tasks/, gen_task/
 │   ├── interim/                      #   scratch output psychscanner writes to during a run; safe to wipe (sim_data_hpc/ for HPC, local/ for local)
 │   ├── processed/                    #   cleaned/wrangled CSVs consumed by the analysis notebooks (exp1_*.csv, exp2_*.csv)
