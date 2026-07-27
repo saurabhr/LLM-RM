@@ -2,7 +2,7 @@
 
 This package is installable with `uv` and is intended to be published separately.
 
-Archived version of [psychscanner](https://github.com/saurabhr/psychscanner) 0.1.0 can be found here: https://github.com/saurabhr/psyschscanner_v_0_1_0
+Archived version of [psychscanner](https://github.com/saurabhr/psychscanner) 0.1.0 can be found here: https://github.com/saurabhr/psychscanner_v_0_1_0
 
 ## Create the package virtual environment
 
